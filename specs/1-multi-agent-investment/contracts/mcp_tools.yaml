@@ -1,0 +1,354 @@
+# MCP Tool Definitions - Alpha-Agent 2026
+
+# All tools are READ-ONLY per security requirements.
+# No write operations to any brokerage or trading API.
+
+openapi: 3.0.3
+info:
+  title: Alpha-Agent MCP Tools
+  version: 1.0.0
+  description: |
+    Model Context Protocol tool definitions for financial data access.
+    **CRITICAL**: All tools are read-only. No write operations permitted.
+
+servers:
+  - url: mcp://alpha-agent-2026
+    description: MCP server for agent tool-calling
+
+paths:
+  # ============================================
+  # Alpha Vantage Tools
+  # ============================================
+  /alpha_vantage/quote:
+    get:
+      operationId: get_quote
+      summary: Get current stock quote
+      x-mcp-read-only: true
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current quote data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol: { type: string }
+                  price: { type: number }
+                  change: { type: number }
+                  change_pct: { type: number }
+                  volume: { type: integer }
+                  timestamp: { type: string, format: date-time }
+
+  /alpha_vantage/rsi:
+    get:
+      operationId: get_rsi
+      summary: Get RSI technical indicator
+      x-mcp-read-only: true
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 14
+      responses:
+        '200':
+          description: RSI values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol: { type: string }
+                  rsi: { type: number }
+                  previous_rsi: { type: number }
+
+  /alpha_vantage/sma:
+    get:
+      operationId: get_sma
+      summary: Get Simple Moving Average
+      x-mcp-read-only: true
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: SMA value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol: { type: string }
+                  sma: { type: number }
+                  period: { type: integer }
+
+  /alpha_vantage/volume:
+    get:
+      operationId: get_volume
+      summary: Get volume data with average
+      x-mcp-read-only: true
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: avg_period
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Volume data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol: { type: string }
+                  current_volume: { type: integer }
+                  avg_volume: { type: integer }
+                  volume_ratio: { type: number }
+
+  /alpha_vantage/market_cap:
+    get:
+      operationId: get_market_cap
+      summary: Get market capitalization
+      x-mcp-read-only: true
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Market cap data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol: { type: string }
+                  market_cap: { type: number }
+                  currency: { type: string, default: USD }
+
+  # ============================================
+  # FRED Data Tools
+  # ============================================
+  /fred/dxy:
+    get:
+      operationId: get_dxy
+      summary: Get Dollar Index (DXY) data
+      x-mcp-read-only: true
+      responses:
+        '200':
+          description: DXY value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MacroIndicator'
+
+  /fred/treasury_10y:
+    get:
+      operationId: get_treasury_10y
+      summary: Get 10-Year Treasury Yield
+      x-mcp-read-only: true
+      responses:
+        '200':
+          description: Treasury yield
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MacroIndicator'
+
+  /fred/cpi:
+    get:
+      operationId: get_cpi
+      summary: Get Consumer Price Index (CPI)
+      x-mcp-read-only: true
+      responses:
+        '200':
+          description: CPI data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MacroIndicator'
+
+  /fred/pce:
+    get:
+      operationId: get_pce
+      summary: Get Personal Consumption Expenditures (PCE)
+      x-mcp-read-only: true
+      responses:
+        '200':
+          description: PCE data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MacroIndicator'
+
+  /fred/fed_funds:
+    get:
+      operationId: get_fed_funds
+      summary: Get Federal Funds Rate
+      x-mcp-read-only: true
+      responses:
+        '200':
+          description: Fed funds rate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MacroIndicator'
+
+  # ============================================
+  # News Sentiment Tools
+  # ============================================
+  /news/sentiment:
+    get:
+      operationId: get_sentiment
+      summary: Get news sentiment for a symbol
+      description: |
+        Returns sentiment from verified sources only (Constitution II).
+        Sources: Bloomberg, Finnhub (not Twitter/Reddit).
+      x-mcp-read-only: true
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sentiment score
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol: { type: string }
+                  sentiment: { type: number, minimum: -1, maximum: 1 }
+                  article_count: { type: integer }
+                  source: { type: string }
+                  updated_at: { type: string, format: date-time }
+
+  # ============================================
+  # Market Calendar Tools
+  # ============================================
+  /calendar/is_holiday:
+    get:
+      operationId: is_market_holiday
+      summary: Check if today is a market holiday
+      x-mcp-read-only: true
+      parameters:
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Holiday status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_holiday: { type: boolean }
+                  holiday_name: { type: string }
+
+  /calendar/earnings:
+    get:
+      operationId: get_earnings_calendar
+      summary: Get upcoming earnings events
+      x-mcp-read-only: true
+      parameters:
+        - name: symbols
+          in: query
+          schema:
+            type: array
+            items: { type: string }
+        - name: days_ahead
+          in: query
+          schema:
+            type: integer
+            default: 7
+      responses:
+        '200':
+          description: Earnings events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    symbol: { type: string }
+                    date: { type: string, format: date }
+                    time: { type: string, enum: [pre-market, after-hours] }
+                    consensus_eps: { type: number }
+
+  # ============================================
+  # Portfolio Reader Tool
+  # ============================================
+  /portfolio/holdings:
+    get:
+      operationId: get_holdings
+      summary: Read portfolio holdings from local file
+      description: |
+        Reads from portfolio.json (gitignored).
+        READ-ONLY: No modifications to holdings.
+      x-mcp-read-only: true
+      responses:
+        '200':
+          description: Current holdings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  holdings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        symbol: { type: string }
+                        shares: { type: number }
+                        cost_basis: { type: number }
+                        entry_date: { type: string, format: date }
+                  last_updated: { type: string, format: date-time }
+
+components:
+  schemas:
+    MacroIndicator:
+      type: object
+      required: [name, value, trend, updated_at]
+      properties:
+        name: { type: string }
+        value: { type: number }
+        previous_value: { type: number }
+        trend:
+          type: string
+          enum: [STRENGTHENING, WEAKENING, NEUTRAL]
+        updated_at: { type: string, format: date-time }
+        source: { type: string, default: FRED }

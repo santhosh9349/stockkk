@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alpha-agent-2026/schemas/trade_recommendation.json",
+  "title": "TradeRecommendation",
+  "description": "A potential trade opportunity. Constitution I: Entry, Target, and Stop-Loss are ALL required.",
+  "type": "object",
+  "required": ["symbol", "universe", "entry", "target", "stop_loss", "rsi", "volume_ratio", "confidence"],
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10,
+      "description": "Stock ticker symbol"
+    },
+    "universe": {
+      "type": "string",
+      "enum": ["QQQ", "IBB", "ITA", "SPY"],
+      "description": "ETF universe the stock belongs to"
+    },
+    "entry": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Entry price (REQUIRED - Constitution I)"
+    },
+    "target": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Target price (REQUIRED - Constitution I)"
+    },
+    "stop_loss": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "2.5% trailing stop-loss (REQUIRED - Constitution I)"
+    },
+    "rsi": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "14-period RSI value"
+    },
+    "volume_ratio": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Current volume / 20-day average volume"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Signal strength (0 = low, 1 = high)"
+    },
+    "market_cap": {
+      "type": ["number", "null"],
+      "description": "Market capitalization in USD (required for IBB universe >= 500M)"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when recommendation was generated"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "universe": { "const": "IBB" } }
+      },
+      "then": {
+        "properties": {
+          "market_cap": {
+            "type": "number",
+            "minimum": 500000000,
+            "description": "Biotech minimum market cap $500M (Constitution III)"
+          }
+        },
+        "required": ["market_cap"]
+      }
+    }
+  ]
+}
