@@ -1,0 +1,26 @@
+# Alpha-Agent 2026 Dependencies
+# Generated: 2026-01-15
+# Python 3.11+
+
+# Core Agent Framework
+google-adk==0.1.0
+mcp==0.1.0
+
+# HTTP Client
+httpx==0.25.2
+
+# Data Validation
+pydantic==2.5.3
+
+# Notifications
+python-telegram-bot==20.7
+
+# Configuration
+python-dotenv==1.0.0
+
+# Development Dependencies
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+ruff==0.1.8
+mypy==1.7.1
