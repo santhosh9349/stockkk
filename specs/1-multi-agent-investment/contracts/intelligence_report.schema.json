@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alpha-agent-2026/schemas/intelligence_report.json",
+  "title": "IntelligenceReport",
+  "description": "The daily consolidated intelligence report",
+  "type": "object",
+  "required": ["report_id", "generated_at", "status"],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["COMPLETE", "PARTIAL", "MARKET_CLOSED"]
+    },
+    "technical_scans": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "$ref": "trade_recommendation.schema.json"
+      },
+      "description": "Top 10 breakout candidates (FR-009)"
+    },
+    "portfolio_alerts": {
+      "type": "array",
+      "items": {
+        "$ref": "portfolio_holding.schema.json"
+      }
+    },
+    "catalysts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["event_id", "date", "event_type", "time_bucket", "description"],
+        "properties": {
+          "event_id": { "type": "string" },
+          "date": { "type": "string", "format": "date" },
+          "event_type": {
+            "type": "string",
+            "enum": ["EARNINGS", "PDUFA", "FED_SPEAKER", "ECONOMIC_RELEASE", "CYCLICAL"]
+          },
+          "time_bucket": {
+            "type": "string",
+            "enum": ["TODAY", "THIS_WEEK", "THREE_MONTH"]
+          },
+          "symbols": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "description": { "type": "string" },
+          "expected_impact": { "type": ["string", "null"] },
+          "report_time": { "type": ["string", "null"] },
+          "consensus_eps": { "type": ["number", "null"] },
+          "speaker_name": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "macro_indicators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "value", "trend", "updated_at"],
+        "properties": {
+          "name": { "type": "string" },
+          "value": { "type": "number" },
+          "previous_value": { "type": ["number", "null"] },
+          "trend": {
+            "type": "string",
+            "enum": ["STRENGTHENING", "WEAKENING", "NEUTRAL"]
+          },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "source": { "type": "string", "default": "FRED" }
+        }
+      }
+    },
+    "metals_advice": {
+      "type": ["object", "null"],
+      "required": ["gld_action", "slv_action", "dxy_value", "dxy_trend", "treasury_10y", "treasury_trend", "rationale"],
+      "properties": {
+        "gld_action": { "type": "string", "enum": ["ACCUMULATE", "PROFIT_TAKE", "HOLD"] },
+        "slv_action": { "type": "string", "enum": ["ACCUMULATE", "PROFIT_TAKE", "HOLD"] },
+        "gld_price": { "type": "number" },
+        "slv_price": { "type": "number" },
+        "gld_rsi": { "type": "number" },
+        "slv_rsi": { "type": "number" },
+        "dxy_value": { "type": "number", "description": "Constitution IV requirement" },
+        "dxy_trend": { "type": "string", "enum": ["STRENGTHENING", "WEAKENING", "NEUTRAL"] },
+        "treasury_10y": { "type": "number", "description": "Constitution IV requirement" },
+        "treasury_trend": { "type": "string", "enum": ["STRENGTHENING", "WEAKENING", "NEUTRAL"] },
+        "rationale": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "unavailable_sections": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sections that failed to load (FR-025)"
+    }
+  }
+}

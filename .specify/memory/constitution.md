@@ -1,50 +1,48 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+SYNC IMPACT REPORT
+Version Change: 0.0.0 -> 1.0.0
+Modified Principles:
+- Financial Integrity (New)
+- Data Governance (New)
+- Risk Management (New)
+- Macro Correlation (New)
+- Operational Window (New)
+Added Sections: N/A
+Removed Sections: Placeholders for [SECTION_2], [SECTION_3] removed as principles cover requirements.
+Templates Requiring Updates: ✅ Checked (plan-template.md refers to constitution generic gates).
+Follow-up:
+- Verify ratification date with project owner (assumed today).
+-->
+
+# Alpha-Agent 2026 Constitution
+<!-- Governing principles for the Alpha-Agent 2026 Investment System -->
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Financial Integrity
+<!-- Non-negotiable entry/exit criteria -->
+No trade recommendation is valid without a calculated Entry, Target, and a mandatory 2.5% Trailing Stop-Loss.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Data Governance
+<!-- Quality over quantity -->
+Prioritize data from verified MCP servers (Alpha Vantage, FRED, Bloomberg) over general web-search sentiment to prevent 'noise' interference.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Risk Management
+<!-- Capital preservation rules -->
+- **Biotech**: Minimum market cap of $500M to avoid 'pump and dump' micro-caps.
+- **Portfolio**: Any stock in existing portfolio showing a -5% trend against the 20-day SMA must trigger an immediate 'Exit' or 'Hedge' alert.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Macro Correlation
+<!-- Context determination -->
+Metals (Gold/Silver) advice must always be weighted against the current DXY (Dollar Index) trend and 10-year Treasury yields.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
-
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Operational Window
+<!-- SLA for insights -->
+All scans must complete and reports must be delivered by 08:30 AM EST to allow for pre-market review.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+<!-- Compliance and Amendment Policy -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+All code, algorithms, and trade logic must strictly adhere to these principles. Amendments require documented justification and backtesting validation ensuring no degradation of the Alpha factor or violation of risk limits.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-01-14 | **Last Amended**: 2026-01-14
