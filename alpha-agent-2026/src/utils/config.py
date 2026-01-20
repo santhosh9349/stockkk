@@ -17,6 +17,7 @@ class Config:
     Required environment variables:
         - ALPHA_VANTAGE_API_KEY: Stock data API key
         - FRED_API_KEY: Macro data API key
+        - GEMINI_API_KEY: Google Gemini API key for LLM analysis
         - TELEGRAM_BOT_TOKEN: Telegram bot token
         - TELEGRAM_CHAT_ID: Telegram chat ID for notifications
     
@@ -32,6 +33,7 @@ class Config:
     # Required API keys
     alpha_vantage_api_key: str
     fred_api_key: str
+    gemini_api_key: str
     telegram_bot_token: str
     telegram_chat_id: str
     
@@ -50,6 +52,7 @@ class Config:
     # Required fields for validation
     _REQUIRED_FIELDS: ClassVar[list[str]] = [
         "ALPHA_VANTAGE_API_KEY",
+        "GEMINI_API_KEY",
         "TELEGRAM_BOT_TOKEN",
         "TELEGRAM_CHAT_ID",
     ]
@@ -88,6 +91,7 @@ class Config:
         return cls(
             alpha_vantage_api_key=os.getenv("ALPHA_VANTAGE_API_KEY", ""),
             fred_api_key=os.getenv("FRED_API_KEY", ""),
+            gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
             telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
             telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", ""),
             github_token=os.getenv("GITHUB_TOKEN"),
