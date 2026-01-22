@@ -28,7 +28,9 @@ class EventType(str, Enum):
     EARNINGS = "EARNINGS"
     PDUFA = "PDUFA"               # FDA drug approval dates
     FED_SPEAKER = "FED_SPEAKER"
+    FED = "FED"                   # Federal Reserve announcements
     ECONOMIC_RELEASE = "ECONOMIC_RELEASE"
+    ECONOMIC = "ECONOMIC"         # Economic data releases
     CYCLICAL = "CYCLICAL"
 
 
@@ -37,6 +39,8 @@ class TimeBucket(str, Enum):
     TODAY = "TODAY"
     THIS_WEEK = "THIS_WEEK"
     THREE_MONTH = "THREE_MONTH"
+    BEYOND = "BEYOND"
+    PAST = "PAST"
 
 
 class Trend(str, Enum):
@@ -44,6 +48,7 @@ class Trend(str, Enum):
     STRENGTHENING = "STRENGTHENING"
     WEAKENING = "WEAKENING"
     NEUTRAL = "NEUTRAL"
+    STABLE = "STABLE"
 
 
 class ReportStatus(str, Enum):

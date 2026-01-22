@@ -10,6 +10,32 @@ from pydantic import BaseModel, Field, computed_field
 from src.models import EventType, TimeBucket
 
 
+def classify_time_bucket(event_date: date) -> TimeBucket:
+    """Classify an event date into a time bucket.
+    
+    FR-014: Events organized by Today/This Week/3-Month Horizon
+    
+    Args:
+        event_date: The date of the event
+        
+    Returns:
+        TimeBucket classification
+    """
+    today = date.today()
+    days_until = (event_date - today).days
+    
+    if days_until < 0:
+        return TimeBucket.PAST
+    elif days_until == 0:
+        return TimeBucket.TODAY
+    elif days_until <= 7:
+        return TimeBucket.THIS_WEEK
+    elif days_until <= 90:
+        return TimeBucket.THREE_MONTH
+    else:
+        return TimeBucket.BEYOND
+
+
 class CatalystEvent(BaseModel):
     """Market-moving catalyst event with time bucket classification.
     
@@ -17,17 +43,27 @@ class CatalystEvent(BaseModel):
     
     Attributes:
         event_type: Type of event (EARNINGS, FDA, FED, etc.)
-        title: Event title/description
+        title: Event title/description (optional for backward compat)
+        description: Event description
         event_date: Date of the event
+        ticker: Related stock ticker symbol (alias for symbol)
         symbol: Related stock symbol (optional)
         details: Additional event details
         impact: Expected market impact (HIGH/MEDIUM/LOW)
     """
     
-    event_type: EventType = Field(..., description="Type of catalyst event")
-    title: str = Field(..., min_length=5, description="Event title")
+    # Support both EventType enum and string for flexibility
+    event_type: str = Field(..., description="Type of catalyst event")
     event_date: date = Field(..., description="Date of the event")
+    
+    # Support both ticker and symbol fields
+    ticker: Optional[str] = Field(None, description="Related stock ticker")
     symbol: Optional[str] = Field(None, description="Related stock symbol")
+    
+    # Description/title fields
+    title: Optional[str] = Field(None, min_length=1, description="Event title")
+    description: Optional[str] = Field(None, description="Event description")
+    
     details: Optional[str] = Field(None, description="Additional details")
     impact: str = Field(default="MEDIUM", description="Expected impact level")
     source: str = Field(default="Unknown", description="Event source")
@@ -37,20 +73,9 @@ class CatalystEvent(BaseModel):
     def time_bucket(self) -> TimeBucket:
         """Classify event into time bucket (FR-014).
         
-        Returns:
-            TODAY if event is today
-            THIS_WEEK if event is within 7 days
-            THREE_MONTH if event is within 90 days
+        Uses the classify_time_bucket function for consistent classification.
         """
-        today = date.today()
-        days_until = (self.event_date - today).days
-        
-        if days_until <= 0:  # Today or past
-            return TimeBucket.TODAY
-        elif days_until <= 7:
-            return TimeBucket.THIS_WEEK
-        else:
-            return TimeBucket.THREE_MONTH
+        return classify_time_bucket(self.event_date)
     
     @computed_field
     @property

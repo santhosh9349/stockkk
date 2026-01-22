@@ -73,7 +73,7 @@ class AlphaAgentOrchestrator:
                 api_key=self.config.fred_api_key
             )
             self._news_client = NewsSentimentClient(
-                api_key=self.config.finnhub_api_key
+                finnhub_api_key=self.config.finnhub_api_key
             )
         
         self._portfolio_reader = PortfolioReader(
@@ -84,20 +84,16 @@ class AlphaAgentOrchestrator:
     def _init_agents(self) -> None:
         """Initialize all agents with their respective tools."""
         self._technical_scanner = TechnicalScannerAgent(
-            alpha_vantage=self._alpha_vantage
+            config=self.config
         )
         self._portfolio_analyst = PortfolioAnalystAgent(
-            alpha_vantage=self._alpha_vantage,
-            news_sentiment=self._news_client,
-            portfolio_reader=self._portfolio_reader,
+            config=self.config
         )
         self._catalyst_macro = CatalystMacroAgent(
-            fred_client=self._fred_client,
-            market_calendar=self._market_calendar,
+            config=self.config
         )
         self._metals_advisor = MetalsAdvisorAgent(
-            alpha_vantage=self._alpha_vantage,
-            fred_client=self._fred_client,
+            config=self.config
         )
     
     async def run(self, market_closed: bool = False) -> IntelligenceReport:
@@ -142,11 +138,8 @@ class AlphaAgentOrchestrator:
         logger.info("Running Technical Scanner...")
         
         try:
-            # Get universe symbols from config
-            universe = self.config.universe_symbols
-            
-            # Run scanner
-            recommendations = await self._technical_scanner.scan(universe)
+            # Run scanner (scans all universes internally)
+            recommendations = await self._technical_scanner.scan()
             
             # Convert to report format
             self.report.technical_scans = [

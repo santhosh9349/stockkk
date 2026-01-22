@@ -50,11 +50,28 @@ class MetalsAdvisorAgent:
         else:
             self.fred_client = MockFREDClient()
     
+    async def advise(self) -> "MetalsAdvice":
+        """Run metals timing analysis and return MetalsAdvice object.
+        
+        Returns:
+            MetalsAdvice object
+        """
+        return await self.analyze_internal()
+    
     async def analyze(self) -> dict:
         """Run metals timing analysis.
         
         Returns:
             MetalsAdvice as dict
+        """
+        advice = await self.analyze_internal()
+        return advice.to_dict()
+    
+    async def analyze_internal(self) -> "MetalsAdvice":
+        """Internal analysis returning MetalsAdvice object.
+        
+        Returns:
+            MetalsAdvice object
         """
         logger.info("Starting metals timing analysis")
         
@@ -94,7 +111,7 @@ class MetalsAdvisorAgent:
         
         logger.info(f"Metals advice: GLD={gld_action.value}, SLV={slv_action.value}")
         
-        return advice.to_dict()
+        return advice
     
     async def _get_dxy_data(self) -> tuple[float, Trend]:
         """Get DXY value and trend.

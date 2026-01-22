@@ -37,6 +37,9 @@ class Config:
     telegram_bot_token: str
     telegram_chat_id: str
     
+    # Optional API keys
+    finnhub_api_key: str | None = None
+    
     # Optional GitHub config
     github_token: str | None = None
     github_repository: str | None = None
@@ -48,6 +51,19 @@ class Config:
     # Data paths
     portfolio_path: str = "data/portfolio.json"
     holidays_path: str = "data/nyse_holidays_2026.json"
+    
+    # Universe symbols for technical scanner
+    universe_symbols: list[str] = None
+    
+    def __post_init__(self):
+        """Initialize default values."""
+        if self.universe_symbols is None:
+            # Default universe: major tech, biotech, aerospace
+            self.universe_symbols = [
+                "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN",  # Tech
+                "MRNA", "REGN", "VRTX", "GILD",           # Biotech
+                "RTX", "LMT", "NOC",                       # Aerospace
+            ]
     
     # Required fields for validation
     _REQUIRED_FIELDS: ClassVar[list[str]] = [
@@ -94,6 +110,7 @@ class Config:
             gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
             telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
             telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", ""),
+            finnhub_api_key=os.getenv("FINNHUB_API_KEY"),
             github_token=os.getenv("GITHUB_TOKEN"),
             github_repository=os.getenv("GITHUB_REPOSITORY"),
             log_level=os.getenv("LOG_LEVEL", "INFO"),

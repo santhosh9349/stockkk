@@ -455,3 +455,113 @@ async def filter_tradeable_symbols(
             )
     
     return tradeable
+
+
+class MockAlphaVantageClient:
+    """Mock Alpha Vantage client for testing without API calls.
+    
+    Provides realistic mock data for dry-run and testing scenarios.
+    """
+    
+    # Mock stock data
+    MOCK_QUOTES = {
+        "AAPL": {"price": 185.50, "change": 2.30, "change_percent": "1.25%", "volume": 55000000},
+        "MSFT": {"price": 378.20, "change": -1.10, "change_percent": "-0.29%", "volume": 22000000},
+        "NVDA": {"price": 495.80, "change": 12.50, "change_percent": "2.59%", "volume": 45000000},
+        "GOOGL": {"price": 142.30, "change": 0.85, "change_percent": "0.60%", "volume": 18000000},
+        "AMZN": {"price": 154.70, "change": 1.20, "change_percent": "0.78%", "volume": 35000000},
+        "META": {"price": 356.40, "change": 5.60, "change_percent": "1.60%", "volume": 15000000},
+        "TSLA": {"price": 248.90, "change": -3.20, "change_percent": "-1.27%", "volume": 85000000},
+        "AMD": {"price": 138.60, "change": 4.20, "change_percent": "3.12%", "volume": 42000000},
+        "MRNA": {"price": 98.50, "change": -2.80, "change_percent": "-2.76%", "volume": 8000000},
+        "VRTX": {"price": 425.30, "change": 3.10, "change_percent": "0.73%", "volume": 1500000},
+        "GLD": {"price": 188.50, "change": 1.20, "change_percent": "0.64%", "volume": 9000000},
+        "SLV": {"price": 22.30, "change": 0.45, "change_percent": "2.06%", "volume": 12000000},
+    }
+    
+    MOCK_RSI = {
+        "AAPL": 55.2, "MSFT": 48.7, "NVDA": 68.3, "GOOGL": 52.1,
+        "AMZN": 45.8, "META": 62.4, "TSLA": 38.5, "AMD": 71.2,
+        "MRNA": 28.4, "VRTX": 54.6, "GLD": 58.9, "SLV": 64.2,
+    }
+    
+    MOCK_SMA = {
+        "AAPL": 182.30, "MSFT": 375.50, "NVDA": 480.20, "GOOGL": 140.80,
+        "AMZN": 152.40, "META": 348.60, "TSLA": 252.10, "AMD": 132.50,
+        "MRNA": 102.30, "VRTX": 420.80, "GLD": 186.20, "SLV": 21.80,
+    }
+    
+    MOCK_MARKET_CAP = {
+        "AAPL": 2850000000000, "MSFT": 2800000000000, "NVDA": 1220000000000,
+        "GOOGL": 1780000000000, "AMZN": 1600000000000, "META": 920000000000,
+        "TSLA": 790000000000, "AMD": 225000000000, "MRNA": 38000000000,
+        "VRTX": 110000000000,
+    }
+    
+    def __init__(self, api_key: str = "mock"):
+        """Initialize mock client."""
+        self.api_key = api_key
+    
+    async def check_stock_status(self, symbol: str) -> StockStatusResult:
+        """Return mock stock status - all symbols are active."""
+        return StockStatusResult(
+            symbol=symbol.upper(),
+            status=StockStatus.ACTIVE,
+            last_trade_date=datetime.now().strftime("%Y-%m-%d"),
+        )
+    
+    async def get_quote(self, symbol: str) -> Optional[dict[str, Any]]:
+        """Return mock quote data."""
+        symbol = symbol.upper()
+        if symbol in self.MOCK_QUOTES:
+            data = self.MOCK_QUOTES[symbol]
+            return {
+                "symbol": symbol,
+                "price": data["price"],
+                "change": data["change"],
+                "change_percent": data["change_percent"],
+                "volume": data["volume"],
+                "latest_trading_day": datetime.now().strftime("%Y-%m-%d"),
+            }
+        # Return default data for unknown symbols
+        return {
+            "symbol": symbol,
+            "price": 100.00,
+            "change": 0.50,
+            "change_percent": "0.50%",
+            "volume": 1000000,
+            "latest_trading_day": datetime.now().strftime("%Y-%m-%d"),
+        }
+    
+    async def get_rsi(
+        self, symbol: str, interval: str = "daily", time_period: int = 14
+    ) -> Optional[float]:
+        """Return mock RSI value."""
+        symbol = symbol.upper()
+        return self.MOCK_RSI.get(symbol, 50.0)
+    
+    async def get_sma(
+        self, symbol: str, interval: str = "daily", time_period: int = 20
+    ) -> Optional[float]:
+        """Return mock SMA value."""
+        symbol = symbol.upper()
+        if symbol in self.MOCK_SMA:
+            return self.MOCK_SMA[symbol]
+        # Return 95% of mock quote price as default SMA
+        quote = self.MOCK_QUOTES.get(symbol, {"price": 100.0})
+        return quote["price"] * 0.95
+    
+    async def get_daily_volume(
+        self, symbol: str, days: int = 20
+    ) -> Optional[list[int]]:
+        """Return mock daily volumes."""
+        symbol = symbol.upper()
+        base_volume = self.MOCK_QUOTES.get(symbol, {"volume": 1000000})["volume"]
+        # Generate varying volumes around the base
+        import random
+        return [int(base_volume * random.uniform(0.8, 1.2)) for _ in range(days)]
+    
+    async def get_market_cap(self, symbol: str) -> Optional[float]:
+        """Return mock market cap."""
+        symbol = symbol.upper()
+        return self.MOCK_MARKET_CAP.get(symbol, 50000000000)  # Default $50B
