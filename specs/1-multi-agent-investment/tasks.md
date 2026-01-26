@@ -19,12 +19,12 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project directory structure per plan.md in alpha-agent-2026/
-- [ ] T002 Initialize Python project with pyproject.toml (Python 3.11+, dependencies: google-adk, mcp, httpx, pydantic, python-telegram-bot, pytest, pytest-asyncio)
-- [ ] T003 [P] Create requirements.txt with pinned dependency versions
-- [ ] T004 [P] Create .gitignore (include portfolio.json, .env, __pycache__, .pytest_cache)
-- [ ] T005 [P] Create .env.example template with all required environment variables
-- [ ] T006 [P] Configure pytest in pyproject.toml and create tests/conftest.py with shared fixtures
+- [X] T001 Create project directory structure per plan.md in alpha-agent-2026/
+- [X] T002 Initialize Python project with pyproject.toml (Python 3.11+, dependencies: google-adk, mcp, httpx, pydantic, python-telegram-bot, pytest, pytest-asyncio)
+- [X] T003 [P] Create requirements.txt with pinned dependency versions
+- [X] T004 [P] Create .gitignore (include portfolio.json, .env, __pycache__, .pytest_cache)
+- [X] T005 [P] Create .env.example template with all required environment variables
+- [X] T006 [P] Configure pytest in pyproject.toml and create tests/conftest.py with shared fixtures
 
 ---
 
@@ -34,12 +34,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Implement Config class with env var loading and validation in src/utils/config.py
-- [ ] T008 [P] Implement retry decorator with exponential backoff (3 attempts, base 1s) in src/utils/retry.py
-- [ ] T009 [P] Implement structured logging utility in src/utils/logging.py
-- [ ] T010 [P] Create enumerations (Universe, Signal, EventType, TimeBucket, Trend, ReportStatus, MetalsAction) in src/models/__init__.py
-- [ ] T011 Create data/ directory with nyse_holidays_2026.json (NYSE holiday calendar)
-- [ ] T012 Create data/portfolio.example.json with mock holdings data for testing
+- [X] T007 Implement Config class with env var loading and validation in src/utils/config.py
+- [X] T008 [P] Implement retry decorator with exponential backoff (3 attempts, base 1s) in src/utils/retry.py
+- [X] T009 [P] Implement structured logging utility in src/utils/logging.py
+- [X] T010 [P] Create enumerations (Universe, Signal, EventType, TimeBucket, Trend, ReportStatus, MetalsAction) in src/models/__init__.py
+- [X] T011 Create data/ directory with nyse_holidays_2026.json (NYSE holiday calendar)
+- [X] T012 Create data/portfolio.example.json with mock holdings data for testing
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -53,37 +53,37 @@
 
 ### Data Models for US1
 
-- [ ] T013 [P] [US1] Create IntelligenceReport Pydantic model with status, unavailable_sections tracking in src/models/intelligence_report.py
-- [ ] T014 [P] [US1] Create DataUnavailable sentinel class for partial report handling in src/models/intelligence_report.py
+- [X] T013 [P] [US1] Create IntelligenceReport Pydantic model with status, unavailable_sections tracking in src/models/intelligence_report.py
+- [X] T014 [P] [US1] Create DataUnavailable sentinel class for partial report handling in src/models/intelligence_report.py
 
 ### Delivery Infrastructure for US1
 
-- [ ] T015 [US1] Implement Markdown report formatter with section templates in src/utils/formatters.py
-- [ ] T016 [US1] Implement GitHub Issue reporter (create/update issues via API) in src/delivery/github_issue.py (depends on T015)
-- [ ] T017 [US1] Implement Telegram bot notifier (summary + link to issue) in src/delivery/telegram_bot.py (depends on T015)
+- [X] T015 [US1] Implement Markdown report formatter with section templates in src/utils/formatters.py
+- [X] T016 [US1] Implement GitHub Issue reporter (create/update issues via API) in src/delivery/github_issue.py (depends on T015)
+- [X] T017 [US1] Implement Telegram bot notifier (summary + link to issue) in src/delivery/telegram_bot.py (depends on T015)
 
 ### Orchestration for US1
 
-- [ ] T018 [US1] Implement AlphaAgentOrchestrator (Google ADK SequentialAgent) in src/agents/orchestrator.py
-- [ ] T019 [US1] Implement partial report fallback logic (mark unavailable sections) in src/agents/orchestrator.py
-- [ ] T020 [US1] Create CLI entry point with --output and --notify flags in src/main.py
+- [X] T018 [US1] Implement AlphaAgentOrchestrator (Google ADK SequentialAgent) in src/agents/orchestrator.py
+- [X] T019 [US1] Implement partial report fallback logic (mark unavailable sections) in src/agents/orchestrator.py
+- [X] T020 [US1] Create CLI entry point with --output and --notify flags in src/main.py
 
 ### CI/CD for US1
 
-- [ ] T021 [US1] Create .github/workflows/daily_scan.yml with cron trigger (08:00 AM EST = 13:00 UTC, weekdays)
-- [ ] T022 [US1] Add market-closed mode (--market-closed flag) posting holiday notice in src/main.py
+- [X] T021 [US1] Create .github/workflows/daily_scan.yml with cron trigger (08:00 AM EST = 13:00 UTC, weekdays)
+- [X] T022 [US1] Add market-closed mode (--market-closed flag) posting holiday notice in src/main.py
 
 ### Edge Case Handling for US1
 
-- [ ] T022a [US1] Implement halted/delisted stock detection and skip logic in src/tools/alpha_vantage.py (FR-028)
-- [ ] T022b [US1] Implement portfolio JSON schema validation with stale data detection in src/tools/portfolio_reader.py (FR-029)
-- [ ] T022c [US1] Implement Telegram notification retry queue (3 attempts) in src/delivery/telegram_bot.py (FR-030)
+- [X] T022a [US1] Implement halted/delisted stock detection and skip logic in src/tools/alpha_vantage.py (FR-028)
+- [X] T022b [US1] Implement portfolio JSON schema validation with stale data detection in src/tools/portfolio_reader.py (FR-029)
+- [X] T022c [US1] Implement Telegram notification retry queue (3 attempts) in src/delivery/telegram_bot.py (FR-030)
 
 ### Tests for US1
 
-- [ ] T023 [P] [US1] Unit test for IntelligenceReport model and partial report marking in tests/unit/test_models.py
-- [ ] T024 [P] [US1] Unit test for Markdown formatter output structure in tests/unit/test_formatters.py
-- [ ] T025 [US1] Integration test for full pipeline with mocked agents in tests/integration/test_full_pipeline.py
+- [X] T023 [P] [US1] Unit test for IntelligenceReport model and partial report marking in tests/unit/test_models.py
+- [X] T024 [P] [US1] Unit test for Markdown formatter output structure in tests/unit/test_formatters.py
+- [X] T025 [US1] Integration test for full pipeline with mocked agents in tests/integration/test_full_pipeline.py
 
 **Checkpoint**: US1 complete - can trigger daily workflow, receive GitHub Issue + Telegram notification (with placeholder agent data)
 
@@ -97,28 +97,28 @@
 
 ### Data Models for US2
 
-- [ ] T026 [P] [US2] Create TradeRecommendation Pydantic model with Constitution I validation (entry, target, stop_loss required, 2.5% validation) in src/models/trade_recommendation.py
+- [X] T026 [P] [US2] Create TradeRecommendation Pydantic model with Constitution I validation (entry, target, stop_loss required, 2.5% validation) in src/models/trade_recommendation.py
 
 ### MCP Tools for US2
 
-- [ ] T027 [P] [US2] Implement alpha_vantage tool base class with rate limiting and caching in src/tools/alpha_vantage.py
-- [ ] T028 [US2] Implement get_quote, get_rsi, get_sma, get_volume methods in src/tools/alpha_vantage.py
-- [ ] T029 [US2] Implement get_market_cap method for biotech filter in src/tools/alpha_vantage.py
+- [X] T027 [P] [US2] Implement alpha_vantage tool base class with rate limiting and caching in src/tools/alpha_vantage.py
+- [X] T028 [US2] Implement get_quote, get_rsi, get_sma, get_volume methods in src/tools/alpha_vantage.py
+- [X] T029 [US2] Implement get_market_cap method for biotech filter in src/tools/alpha_vantage.py
 
 ### Agent Implementation for US2
 
-- [ ] T030 [US2] Implement TechnicalScannerAgent with Gemini 3 Flash model in src/agents/technical_scanner.py
-- [ ] T031 [US2] Implement RSI crossover filter (RSI < 30 OR RSI crossing 50 from below) in src/agents/technical_scanner.py
-- [ ] T032 [US2] Implement volume spike filter (> 1.5x 20-day average) in src/agents/technical_scanner.py
-- [ ] T033 [US2] Implement biotech_filter excluding IBB tickers with market cap < $500M in src/agents/technical_scanner.py
-- [ ] T034 [US2] Implement trade parameter calculation (entry, target, 2.5% trailing stop with `high_water_mark` state variable tracking max price since entry) in src/agents/technical_scanner.py
-- [ ] T035 [US2] Implement confidence ranking and top 10 limit (FR-009) in src/agents/technical_scanner.py
+- [X] T030 [US2] Implement TechnicalScannerAgent with Gemini 3 Flash model in src/agents/technical_scanner.py
+- [X] T031 [US2] Implement RSI crossover filter (RSI < 30 OR RSI crossing 50 from below) in src/agents/technical_scanner.py
+- [X] T032 [US2] Implement volume spike filter (> 1.5x 20-day average) in src/agents/technical_scanner.py
+- [X] T033 [US2] Implement biotech_filter excluding IBB tickers with market cap < $500M in src/agents/technical_scanner.py
+- [X] T034 [US2] Implement trade parameter calculation (entry, target, 2.5% trailing stop with `high_water_mark` state variable tracking max price since entry) in src/agents/technical_scanner.py
+- [X] T035 [US2] Implement confidence ranking and top 10 limit (FR-009) in src/agents/technical_scanner.py
 
 ### Tests for US2
 
-- [ ] T036 [P] [US2] Unit test for TradeRecommendation validation (stop_loss must be entry * 0.975) in tests/unit/test_models.py
-- [ ] T037 [P] [US2] Unit test for biotech_filter ($500M threshold) in tests/unit/test_biotech_filter.py
-- [ ] T038 [US2] Contract test for TradeRecommendation against JSON schema in tests/contract/test_report_schema.py
+- [X] T036 [P] [US2] Unit test for TradeRecommendation validation (stop_loss must be entry * 0.975) in tests/unit/test_models.py
+- [X] T037 [P] [US2] Unit test for biotech_filter ($500M threshold) in tests/unit/test_biotech_filter.py
+- [X] T038 [US2] Contract test for TradeRecommendation against JSON schema in tests/contract/test_report_schema.py
 
 **Checkpoint**: US2 complete - Technical Scanner produces valid trade recommendations with all Constitution I fields
 
@@ -132,26 +132,26 @@
 
 ### Data Models for US3
 
-- [ ] T039 [P] [US3] Create PortfolioHolding Pydantic model with computed fields (pct_vs_sma, position_pct, pnl_pct, signal) in src/models/portfolio_holding.py
+- [X] T039 [P] [US3] Create PortfolioHolding Pydantic model with computed fields (pct_vs_sma, position_pct, pnl_pct, signal) in src/models/portfolio_holding.py
 
 ### MCP Tools for US3
 
-- [ ] T040 [P] [US3] Implement portfolio_reader tool (read portfolio.json, no writes) in src/tools/portfolio_reader.py
-- [ ] T041 [P] [US3] Implement news_sentiment tool (Bloomberg/Finnhub verified sources only) in src/tools/news_sentiment.py
+- [X] T040 [P] [US3] Implement portfolio_reader tool (read portfolio.json, no writes) in src/tools/portfolio_reader.py
+- [X] T041 [P] [US3] Implement news_sentiment tool (Bloomberg/Finnhub verified sources only) in src/tools/news_sentiment.py
 
 ### Agent Implementation for US3
 
-- [ ] T042 [US3] Implement PortfolioAnalystAgent with Gemini 3 Pro model in src/agents/portfolio_analyst.py
-- [ ] T043 [US3] Implement 20-day SMA comparison logic in src/agents/portfolio_analyst.py
-- [ ] T044 [US3] Implement Option B Exit/Hedge decision logic (EXIT if position > 10% OR loss > 10%, else HEDGE) in src/agents/portfolio_analyst.py
-- [ ] T045 [US3] Implement Top-up signal logic (positive momentum + favorable sentiment) in src/agents/portfolio_analyst.py
-- [ ] T046 [US3] Implement sentiment cross-reference with news sources in src/agents/portfolio_analyst.py
+- [X] T042 [US3] Implement PortfolioAnalystAgent with Gemini 3 Pro model in src/agents/portfolio_analyst.py
+- [X] T043 [US3] Implement 20-day SMA comparison logic in src/agents/portfolio_analyst.py
+- [X] T044 [US3] Implement Option B Exit/Hedge decision logic (EXIT if position > 10% OR loss > 10%, else HEDGE) in src/agents/portfolio_analyst.py
+- [X] T045 [US3] Implement Top-up signal logic (positive momentum + favorable sentiment) in src/agents/portfolio_analyst.py
+- [X] T046 [US3] Implement sentiment cross-reference with news sources in src/agents/portfolio_analyst.py
 
 ### Tests for US3
 
-- [ ] T047 [P] [US3] Unit test for PortfolioHolding model computed properties in tests/unit/test_models.py
-- [ ] T048 [US3] Unit test for Option B logic (EXIT vs HEDGE conditions) in tests/unit/test_portfolio_analyst.py
-- [ ] T049 [US3] Contract test for PortfolioHolding against JSON schema in tests/contract/test_report_schema.py
+- [X] T047 [P] [US3] Unit test for PortfolioHolding model computed properties in tests/unit/test_models.py
+- [X] T048 [US3] Unit test for Option B logic (EXIT vs HEDGE conditions) in tests/unit/test_portfolio_analyst.py
+- [X] T049 [US3] Contract test for PortfolioHolding against JSON schema in tests/contract/test_report_schema.py
 
 **Checkpoint**: US3 complete - Portfolio Health correctly flags holdings with Exit/Hedge/Top-up signals per Constitution III
 
@@ -165,27 +165,27 @@
 
 ### Data Models for US4
 
-- [ ] T050 [P] [US4] Create CatalystEvent Pydantic model with time_bucket classification in src/models/catalyst_event.py
-- [ ] T051 [P] [US4] Create MacroIndicator Pydantic model with trend calculation in src/models/macro_indicator.py
+- [X] T050 [P] [US4] Create CatalystEvent Pydantic model with time_bucket classification in src/models/catalyst_event.py
+- [X] T051 [P] [US4] Create MacroIndicator Pydantic model with trend calculation in src/models/macro_indicator.py
 
 ### MCP Tools for US4
 
-- [ ] T052 [P] [US4] Implement market_calendar tool (is_market_holiday, get_earnings_today, get_fed_speakers) in src/tools/market_calendar.py
-- [ ] T053 [P] [US4] Implement fred_data tool base with daily caching in src/tools/fred_data.py
-- [ ] T054 [US4] Implement get_dxy, get_treasury_10y, get_cpi, get_pce, get_fed_funds methods in src/tools/fred_data.py
+- [X] T052 [P] [US4] Implement market_calendar tool (is_market_holiday, get_earnings_today, get_fed_speakers) in src/tools/market_calendar.py
+- [X] T053 [P] [US4] Implement fred_data tool base with daily caching in src/tools/fred_data.py
+- [X] T054 [US4] Implement get_dxy, get_treasury_10y, get_cpi, get_pce, get_fed_funds methods in src/tools/fred_data.py
 
 ### Agent Implementation for US4
 
-- [ ] T055 [US4] Implement CatalystMacroAgent with Gemini 3 Pro model in src/agents/catalyst_macro.py
-- [ ] T056 [US4] Implement event categorization into Today/This Week/3-Month buckets in src/agents/catalyst_macro.py
-- [ ] T057 [US4] Implement macro dashboard (Fed Rate probability, DXY, Treasury, CPI/PCE) in src/agents/catalyst_macro.py
-- [ ] T058 [US4] Wire market_calendar tool for holiday detection in orchestrator in src/agents/orchestrator.py
+- [X] T055 [US4] Implement CatalystMacroAgent with Gemini 3 Pro model in src/agents/catalyst_macro.py
+- [X] T056 [US4] Implement event categorization into Today/This Week/3-Month buckets in src/agents/catalyst_macro.py
+- [X] T057 [US4] Implement macro dashboard (Fed Rate probability, DXY, Treasury, CPI/PCE) in src/agents/catalyst_macro.py
+- [X] T058 [US4] Wire market_calendar tool for holiday detection in orchestrator in src/agents/orchestrator.py
 
 ### Tests for US4
 
-- [ ] T059 [P] [US4] Unit test for CatalystEvent time_bucket assignment in tests/unit/test_models.py
-- [ ] T060 [P] [US4] Unit test for MacroIndicator trend calculation in tests/unit/test_models.py
-- [ ] T061 [US4] Integration test for FRED API tool with mock responses in tests/integration/test_fred_tool.py
+- [X] T059 [P] [US4] Unit test for CatalystEvent time_bucket assignment in tests/unit/test_catalyst_event.py
+- [X] T060 [P] [US4] Unit test for MacroIndicator trend calculation in tests/unit/test_macro_indicator.py
+- [X] T061 [US4] Integration test for FRED API tool with mock responses in tests/integration/test_fred_tool.py
 
 **Checkpoint**: US4 complete - Catalyst calendar and macro dashboard populated with categorized events
 
@@ -199,21 +199,21 @@
 
 ### Data Models for US5
 
-- [ ] T062 [P] [US5] Create MetalsAdvice Pydantic model with required dxy_value, dxy_trend, treasury_10y, treasury_trend fields in src/models/metals_advice.py
+- [X] T062 [P] [US5] Create MetalsAdvice Pydantic model with required dxy_value, dxy_trend, treasury_10y, treasury_trend fields in src/models/metals_advice.py
 
 ### Agent Implementation for US5
 
-- [ ] T063 [US5] Implement MetalsAdvisorAgent with Gemini 3 Pro model in src/agents/metals_advisor.py
-- [ ] T064 [US5] Implement DXY correlation logic (accumulate on DXY strength) in src/agents/metals_advisor.py
-- [ ] T065 [US5] Implement Treasury yield context weighting in src/agents/metals_advisor.py
-- [ ] T066 [US5] Implement profit-taking logic (overbought + geopolitical tension) in src/agents/metals_advisor.py
-- [ ] T067 [US5] Wire MetalsAdvisorAgent to receive macro_context from CatalystMacroAgent in src/agents/orchestrator.py
+- [X] T063 [US5] Implement MetalsAdvisorAgent with Gemini 3 Pro model in src/agents/metals_advisor.py
+- [X] T064 [US5] Implement DXY correlation logic (accumulate on DXY strength) in src/agents/metals_advisor.py
+- [X] T065 [US5] Implement Treasury yield context weighting in src/agents/metals_advisor.py
+- [X] T066 [US5] Implement profit-taking logic (overbought + geopolitical tension) in src/agents/metals_advisor.py
+- [X] T067 [US5] Wire MetalsAdvisorAgent to receive macro_context from CatalystMacroAgent in src/agents/orchestrator.py
 
 ### Tests for US5
 
-- [ ] T068 [P] [US5] Unit test for MetalsAdvice validation (dxy/treasury fields required) in tests/unit/test_models.py
-- [ ] T069 [US5] Unit test for DXY correlation recommendation logic in tests/unit/test_metals_advisor.py
-- [ ] T070 [US5] Contract test for MetalsAdvice against JSON schema in tests/contract/test_report_schema.py
+- [X] T068 [P] [US5] Unit test for MetalsAdvice validation (dxy/treasury fields required) in tests/unit/test_metals_advisor.py
+- [X] T069 [US5] Unit test for DXY correlation recommendation logic in tests/unit/test_metals_advisor.py
+- [X] T070 [US5] Contract test for MetalsAdvice against JSON schema in tests/unit/test_metals_advisor.py
 
 **Checkpoint**: US5 complete - Metals advisor provides recommendations with DXY/Treasury context per Constitution IV
 
@@ -223,12 +223,12 @@
 
 **Purpose**: Documentation, cleanup, and final validation
 
-- [ ] T071 [P] Create README.md with project overview, setup instructions, GitHub Secrets documentation
-- [ ] T072 [P] Document API rate limits and caching strategy in README.md
-- [ ] T073 [P] Add inline code documentation for all Constitution rule implementations
-- [ ] T074 Run quickstart.md validation (follow local dev setup, verify working)
-- [ ] T075 Final integration test: run full pipeline end-to-end with real APIs (manual)
-- [ ] T076 Security review: verify no credentials in code, portfolio.json gitignored
+- [X] T071 [P] Create README.md with project overview, setup instructions, GitHub Secrets documentation
+- [X] T072 [P] Document API rate limits and caching strategy in README.md
+- [X] T073 [P] Add inline code documentation for all Constitution rule implementations
+- [X] T074 Run quickstart.md validation (follow local dev setup, verify working)
+- [X] T075 Final integration test: run full pipeline end-to-end with real APIs (manual)
+- [X] T076 Security review: verify no credentials in code, portfolio.json gitignored
 
 ---
 

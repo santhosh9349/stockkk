@@ -1,0 +1,35 @@
+{
+  "holdings": [
+    {
+      "symbol": "AAPL",
+      "shares": 100,
+      "cost_basis": 150.00,
+      "entry_date": "2025-06-15"
+    },
+    {
+      "symbol": "NVDA",
+      "shares": 50,
+      "cost_basis": 450.00,
+      "entry_date": "2025-08-01"
+    },
+    {
+      "symbol": "MRNA",
+      "shares": 25,
+      "cost_basis": 120.00,
+      "entry_date": "2025-09-10"
+    },
+    {
+      "symbol": "RTX",
+      "shares": 75,
+      "cost_basis": 95.00,
+      "entry_date": "2025-07-22"
+    },
+    {
+      "symbol": "MSFT",
+      "shares": 40,
+      "cost_basis": 380.00,
+      "entry_date": "2025-05-01"
+    }
+  ],
+  "last_updated": "2026-01-14T08:00:00Z"
+}

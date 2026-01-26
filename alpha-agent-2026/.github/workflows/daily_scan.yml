@@ -1,0 +1,82 @@
+name: Alpha-Agent Daily Scan
+
+on:
+  schedule:
+    # 08:00 AM EST = 13:00 UTC (during EST)
+    # Note: Adjust to 12:00 UTC during EDT (March-November)
+    - cron: '0 13 * * 1-5'  # Weekdays only (Mon-Fri)
+  
+  workflow_dispatch:  # Manual trigger for testing
+    inputs:
+      market_closed:
+        description: 'Force market closed mode'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  daily-intelligence:
+    name: Daily Intelligence Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 30  # Hard cutoff before 08:30 deadline
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          cd alpha-agent-2026
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Decode portfolio data
+        env:
+          PORTFOLIO_JSON_BASE64: ${{ secrets.PORTFOLIO_JSON_BASE64 }}
+        run: |
+          cd alpha-agent-2026
+          if [ -n "$PORTFOLIO_JSON_BASE64" ]; then
+            echo "$PORTFOLIO_JSON_BASE64" | base64 -d > data/portfolio.json
+            echo "Portfolio data decoded successfully"
+          else
+            echo "No portfolio secret found, using example data"
+            cp data/portfolio.example.json data/portfolio.json
+          fi
+      
+      - name: Run Alpha-Agent Pipeline
+        env:
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd alpha-agent-2026
+          
+          # Check if market closed mode is forced
+          if [ "${{ github.event.inputs.market_closed }}" = "true" ]; then
+            echo "Running in forced market-closed mode"
+            python -m src.main --output github-issue --notify telegram --market-closed
+          else
+            echo "Running normal pipeline"
+            python -m src.main --output github-issue --notify telegram
+          fi
+      
+      - name: Report Status
+        if: always()
+        run: |
+          echo "Pipeline completed at $(date)"
+          echo "Exit code: $?"
